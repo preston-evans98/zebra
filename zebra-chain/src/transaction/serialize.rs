@@ -4,6 +4,7 @@
 use std::{io, sync::Arc};
 
 use byteorder::{LittleEndian, ReadBytesExt, WriteBytesExt};
+use halo2::pasta::pallas;
 
 use crate::{
     parameters::{OVERWINTER_VERSION_GROUP_ID, SAPLING_VERSION_GROUP_ID, TX_V5_VERSION_GROUP_ID},
@@ -30,6 +31,21 @@ impl ZcashDeserialize for jubjub::Fq {
         }
     }
 }
+
+impl ZcashDeserialize for pallas::Scalar {
+    fn zcash_deserialize<R: io::Read>(mut reader: R) -> Result<Self, SerializationError> {
+        let possible_scalar = pallas::Scalar::from_bytes(&reader.read_32_bytes()?);
+
+        if possible_scalar.is_some().into() {
+            Ok(possible_scalar.unwrap())
+        } else {
+            Err(SerializationError::Parse(
+                "Invalid pallas::Scalar, input not canonical",
+            ))
+        }
+    }
+}
+
 impl<P: ZkSnarkProof> ZcashSerialize for JoinSplitData<P> {
     fn zcash_serialize<W: io::Write>(&self, mut writer: W) -> Result<(), io::Error> {
         writer.write_compactsize(self.joinsplits().count() as u64)?;
