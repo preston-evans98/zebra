@@ -13,6 +13,7 @@ default = []
 proptest-impl = ["proptest", "proptest-derive"]
 
 [dependencies]
+aes = "0.6"
 bech32 = "0.8.0"
 bitvec = "0.17.4"
 blake2b_simd = "0.5.11"
@@ -20,6 +21,7 @@ blake2s_simd = "0.5.11"
 bs58 = { version = "0.4", features = ["check"] }
 byteorder = "1.4"
 chrono = { version = "0.4", features = ["serde"] }
+fpe = "0.4"
 futures = "0.3"
 halo2 = { git = "https://github.com/zcash/halo2.git", branch = "main" }
 hex = "0.4"
