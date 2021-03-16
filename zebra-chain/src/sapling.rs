@@ -7,8 +7,6 @@ mod commitment;
 mod note;
 mod output;
 mod spend;
-#[cfg(test)]
-mod tests;
 
 // XXX clean up these modules
 
